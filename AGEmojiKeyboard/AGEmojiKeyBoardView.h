@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, AGEmojiKeyboardViewCategoryImage) {
  Pagecontrol displays the current page and number of pages on an emoji page.
  */
 @property (nonatomic, readonly) UIPageControl *pageControl;
+@property (nonatomic) UIColor *pageIndicatorTintColor;
+@property (nonatomic) UIColor *currentPageIndicatorTintColor;
 
 /**
  Scroll view displays all the emoji pages.
@@ -55,9 +57,18 @@ typedef NS_ENUM(NSInteger, AGEmojiKeyboardViewCategoryImage) {
  @param dataSource dataSource is required during the initialization to
  get all the relevent images to present in the view.
  */
+//- (instancetype)initWithFrame:(CGRect)frame
+//                   dataSource:(id<AGEmojiKeyboardViewDataSource>)dataSource;
+
 - (instancetype)initWithFrame:(CGRect)frame
+             pageControlFrame:(CGRect)pageControlFrame
+             segmentsBarFrame:(CGRect)segmentsBarFrame
                    dataSource:(id<AGEmojiKeyboardViewDataSource>)dataSource;
 
+- (instancetype)initWithFrame:(CGRect)frame
+             pageControlFrame:(CGRect)pageControlFrame
+              buttonsBarFrame:(CGRect)buttonsBarFrame
+                   dataSource:(id<AGEmojiKeyboardViewDataSource>)dataSource;
 @end
 
 
@@ -114,6 +125,12 @@ typedef NS_ENUM(NSInteger, AGEmojiKeyboardViewCategoryImage) {
  @param emojiKeyBoardView EmojiKeyBoardView object shown.
  */
 - (NSUInteger)recentEmojisMaintainedCountForEmojiKeyboardView:(AGEmojiKeyboardView *)emojiKeyboardView;
+
+- (UIColor *)selectedButtonBackgroundColor;
+
+- (UIColor *)unselectedButtonBackgroundColor;
+
+- (UIColor *)buttonsViewBackgroundColor;
 
 @end
 
