@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "AGEmojiKeyboard"
-  s.version          = "0.2.0"
+  s.version          = "0.3.0"
   s.summary          = "An emoji keyboard view that can replace the default iOS keyboard."
   s.description      = <<-DESC
                        AGEmojiKeyboard is a replacement view for the default keyboard 
@@ -13,8 +13,7 @@ Pod::Spec.new do |s|
 
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { "Ayush Goel" => "ayushgoel111@gmail.com" }
-  s.source           = { :git => "https://github.com/ayushgoel/AGEmojiKeyboard.git", :tag => "#{s.version}" }
-
+  s.source           = { :git => "https://github.com/itomych/AGEmojiKeyboard.git"
   s.platform     = :ios, '7.0'
   s.ios.deployment_target = '7.0'
   s.requires_arc = true
