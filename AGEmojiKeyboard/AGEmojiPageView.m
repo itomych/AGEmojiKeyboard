@@ -41,10 +41,13 @@
       [button setTitle:buttonTexts[i] forState:UIControlStateNormal];
       [self addToViewButton:button];
     }
-    UIButton *button = [self createButtonAtIndex:self.rows * self.columns - 1];
-    [button setImage:self.backSpaceButtonImage forState:UIControlStateNormal];
-    button.tag = BACKSPACE_BUTTON_TAG;
-    [self addToViewButton:button];
+      if (self.backSpaceButtonImage) {
+        UIButton *button = [self createButtonAtIndex:self.rows * self.columns - 1];
+        [button setImage:self.backSpaceButtonImage forState:UIControlStateNormal];
+        button.tag = BACKSPACE_BUTTON_TAG;
+        [self addToViewButton:button];
+      }
+
   }
 }
 

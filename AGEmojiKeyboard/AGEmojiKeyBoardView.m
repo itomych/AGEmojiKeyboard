@@ -28,6 +28,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 @property (nonatomic) NSDictionary *emojis;
 @property (nonatomic) NSMutableArray *pageViews;
 @property (nonatomic) NSString *category;
+@property (nonatomic) NSArray *buttons;
 
 @property (nonatomic) CGRect pageControlFrame;
 @property (nonatomic) CGRect segmentsBarFrame;
@@ -141,6 +142,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
           buttonsView.backgroundColor = [self.dataSource buttonsViewBackgroundColor];
           int count = (int)self.imagesForSelectedSegments.count;
           CGFloat buttonWidth = (CGRectGetWidth(self.buttonsBarFrame) - (count + 2) * AGSelectingButtonMargin) / (count + 1);
+          NSMutableArray *buttons = [NSMutableArray array];
           for (int i = 0; i < count; i++) {
               UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
               CGFloat offset = AGSelectingButtonMargin + i * (buttonWidth + AGSelectingButtonMargin);
@@ -148,11 +150,12 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
               [button setImage:self.imagesForNonSelectedSegments[i] forState:UIControlStateNormal];
               [button setImage:self.imagesForSelectedSegments[i] forState:UIControlStateSelected];
               [button setBackgroundImage:[UIImage resizableImageWithColor:[self.dataSource unselectedButtonBackgroundColor] cornerRadius:0] forState:UIControlStateNormal];
-              [button setBackgroundImage:[UIImage resizableImageWithColor:[self.dataSource selectedButtonBackgroundColor] cornerRadius:0] forState:UIControlStateHighlighted];
+              [button setBackgroundImage:[UIImage resizableImageWithColor:[self.dataSource selectedButtonBackgroundColor] cornerRadius:0] forState:UIControlStateSelected];
               button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
               button.tag = i;
               [button addTarget:self action:@selector(buttonSelected:) forControlEvents:UIControlEventTouchUpInside];
               [buttonsView addSubview:button];
+              [buttons addObject:button];
           }
           UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
           deleteButton.frame = CGRectMake(AGSelectingButtonMargin + count * (buttonWidth + AGSelectingButtonMargin), AGSelectingButtonMargin, buttonWidth, CGRectGetHeight(self.buttonsBarFrame) - AGSelectingButtonMargin);
@@ -162,6 +165,8 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
           deleteButton.backgroundColor = [self.dataSource selectedButtonBackgroundColor];
           [deleteButton addTarget:self action:@selector(emojiPageViewDidPressBackSpace:) forControlEvents:UIControlEventTouchUpInside];
           [buttonsView addSubview:deleteButton];
+          [buttons addObject:deleteButton];
+          self.buttons = [buttons copy];
           
           [self addSubview:buttonsView];
       }
@@ -194,11 +199,13 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
                                         CGRectGetWidth(self.bounds),
                                         CGRectGetHeight(self.bounds) - barHeight - pageControlSize.height);
     self.emojiPagesScrollView = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
+    self.emojiPagesScrollView.backgroundColor = [UIColor clearColor];
     self.emojiPagesScrollView.pagingEnabled = YES;
     self.emojiPagesScrollView.showsHorizontalScrollIndicator = NO;
     self.emojiPagesScrollView.showsVerticalScrollIndicator = NO;
     self.emojiPagesScrollView.delegate = self;
 
+    self.backgroundColor = [self.dataSource emojiKeyboardViewBackgroundColor];
     [self addSubview:self.emojiPagesScrollView];
   }
   return self;
@@ -254,6 +261,9 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 - (void)buttonSelected:(UIButton *)button {
     self.category = [self categoryNameAtIndex:button.tag];
     self.pageControl.currentPage = 0;
+    for (UIButton *item in self.buttons) {
+        item.selected = item == button ? YES : NO;
+    }
     [self setNeedsLayout];
 }
 
@@ -359,8 +369,9 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 
   NSUInteger rows = [self numberOfRowsForFrameSize:scrollView.bounds.size];
   NSUInteger columns = [self numberOfColumnsForFrameSize:scrollView.bounds.size];
-  NSUInteger startingIndex = index * (rows * columns - 1);
-  NSUInteger endingIndex = (index + 1) * (rows * columns - 1);
+  NSUInteger backSpaceButton = [self.dataSource backSpaceButtonImageForEmojiKeyboardView:self] ? 1 : 0;
+  NSUInteger startingIndex = index * (rows * columns - backSpaceButton);
+  NSUInteger endingIndex = (index + 1) * (rows * columns - backSpaceButton);
   NSMutableArray *buttonTexts = [self emojiTextsForCategory:self.category
                                                   fromIndex:startingIndex
                                                     toIndex:endingIndex];

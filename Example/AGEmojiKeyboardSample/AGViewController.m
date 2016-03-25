@@ -84,6 +84,10 @@
   return nil;
 }
 
+- (UIColor *)emojiKeyboardViewBackgroundColor {
+   return [UIColor colorWithRed:206/255.0 green:209/255.0 blue:214/255.0 alpha:1.0];
+}
+
 - (UIColor *)selectedButtonBackgroundColor {
     return [UIColor colorWithRed:186/255.0 green:189/255.0 blue:194/255.0 alpha:1.0];
 }

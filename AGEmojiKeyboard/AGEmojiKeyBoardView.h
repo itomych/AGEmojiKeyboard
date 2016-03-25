@@ -104,6 +104,14 @@ typedef NS_ENUM(NSInteger, AGEmojiKeyboardViewCategoryImage) {
  */
 - (UIImage *)backSpaceButtonImageForEmojiKeyboardView:(AGEmojiKeyboardView *)emojiKeyboardView;
 
+- (UIColor *)emojiKeyboardViewBackgroundColor;
+
+- (UIColor *)selectedButtonBackgroundColor;
+
+- (UIColor *)unselectedButtonBackgroundColor;
+
+- (UIColor *)buttonsViewBackgroundColor;
+
 @optional
 
 /**
@@ -125,12 +133,6 @@ typedef NS_ENUM(NSInteger, AGEmojiKeyboardViewCategoryImage) {
  @param emojiKeyBoardView EmojiKeyBoardView object shown.
  */
 - (NSUInteger)recentEmojisMaintainedCountForEmojiKeyboardView:(AGEmojiKeyboardView *)emojiKeyboardView;
-
-- (UIColor *)selectedButtonBackgroundColor;
-
-- (UIColor *)unselectedButtonBackgroundColor;
-
-- (UIColor *)buttonsViewBackgroundColor;
 
 @end
 
