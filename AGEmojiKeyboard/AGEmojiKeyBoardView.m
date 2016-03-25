@@ -154,6 +154,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
               button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
               button.tag = i;
               [button addTarget:self action:@selector(buttonSelected:) forControlEvents:UIControlEventTouchUpInside];
+              button.selected = i == 0 ? YES : NO;
               [buttonsView addSubview:button];
               [buttons addObject:button];
           }
