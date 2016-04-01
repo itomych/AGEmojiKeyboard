@@ -81,7 +81,11 @@
 - (UIImage *)backSpaceButtonImageForEmojiKeyboardView:(AGEmojiKeyboardView *)emojiKeyboardView {
   UIImage *img = [self randomImage];
   [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-  return nil;
+  return img;
+}
+
+- (BOOL)shouldAddBackSpaceButtonToEmojiKeyboardView {
+    return NO;
 }
 
 - (UIColor *)emojiKeyboardViewBackgroundColor {

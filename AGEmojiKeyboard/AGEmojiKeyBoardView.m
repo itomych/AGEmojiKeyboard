@@ -328,8 +328,12 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
                                     0,
                                     CGRectGetWidth(self.emojiPagesScrollView.bounds),
                                     CGRectGetHeight(self.emojiPagesScrollView.bounds));
+  UIImage *backSpaceImage;
+  if ([self.dataSource shouldAddBackSpaceButtonToEmojiKeyboardView]) {
+      backSpaceImage = [self.dataSource backSpaceButtonImageForEmojiKeyboardView:self];
+  }
   AGEmojiPageView *pageView = [[AGEmojiPageView alloc] initWithFrame: pageViewFrame
-                                                backSpaceButtonImage:[self.dataSource backSpaceButtonImageForEmojiKeyboardView:self]
+                                                backSpaceButtonImage:backSpaceImage
                                                           buttonSize:CGSizeMake(ButtonWidth, ButtonHeight)
                                                                 rows:rows
                                                              columns:columns];
@@ -370,7 +374,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 
   NSUInteger rows = [self numberOfRowsForFrameSize:scrollView.bounds.size];
   NSUInteger columns = [self numberOfColumnsForFrameSize:scrollView.bounds.size];
-  NSUInteger backSpaceButton = [self.dataSource backSpaceButtonImageForEmojiKeyboardView:self] ? 1 : 0;
+  NSUInteger backSpaceButton = [self.dataSource shouldAddBackSpaceButtonToEmojiKeyboardView] ? 1 : 0;
   NSUInteger startingIndex = index * (rows * columns - backSpaceButton);
   NSUInteger endingIndex = (index + 1) * (rows * columns - backSpaceButton);
   NSMutableArray *buttonTexts = [self emojiTextsForCategory:self.category

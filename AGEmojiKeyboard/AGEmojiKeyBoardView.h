@@ -104,6 +104,8 @@ typedef NS_ENUM(NSInteger, AGEmojiKeyboardViewCategoryImage) {
  */
 - (UIImage *)backSpaceButtonImageForEmojiKeyboardView:(AGEmojiKeyboardView *)emojiKeyboardView;
 
+- (BOOL)shouldAddBackSpaceButtonToEmojiKeyboardView;
+
 - (UIColor *)emojiKeyboardViewBackgroundColor;
 
 - (UIColor *)selectedButtonBackgroundColor;
