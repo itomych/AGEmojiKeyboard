@@ -151,6 +151,8 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
               [button setImage:self.imagesForSelectedSegments[i] forState:UIControlStateSelected];
               [button setBackgroundImage:[UIImage resizableImageWithColor:[self.dataSource unselectedButtonBackgroundColor] cornerRadius:0] forState:UIControlStateNormal];
               [button setBackgroundImage:[UIImage resizableImageWithColor:[self.dataSource selectedButtonBackgroundColor] cornerRadius:0] forState:UIControlStateSelected];
+              [button setBackgroundImage:[UIImage resizableImageWithColor:[self.dataSource selectedButtonBackgroundColor] cornerRadius:0] forState:UIControlStateSelected | UIControlStateHighlighted];
+              [button setBackgroundImage:[UIImage resizableImageWithColor:[self.dataSource selectedButtonBackgroundColor] cornerRadius:0] forState:UIControlStateHighlighted];
               button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
               button.tag = i;
               [button addTarget:self action:@selector(buttonSelected:) forControlEvents:UIControlEventTouchUpInside];
