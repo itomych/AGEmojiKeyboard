@@ -31,6 +31,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 @property (nonatomic) NSArray *buttons;
 
 @property (nonatomic) CGRect pageControlFrame;
+@property (nonatomic) CGRect emojiPagesFrame;
 @property (nonatomic) CGRect segmentsBarFrame;
 @property (nonatomic) CGRect buttonsBarFrame;
 
@@ -196,12 +197,8 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
     [self addSubview:self.pageControl];
 
     CGFloat barHeight = CGRectGetHeight(self.segmentsBarFrame) ? CGRectGetHeight(self.segmentsBarFrame) : CGRectGetHeight(self.buttonsBarFrame);
-      
-    CGRect scrollViewFrame = CGRectMake(0,
-                                        CGRectGetHeight(self.pageControl.bounds),
-                                        CGRectGetWidth(self.bounds),
-                                        CGRectGetHeight(self.bounds) - barHeight - pageControlSize.height);
-    self.emojiPagesScrollView = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
+                                        
+    self.emojiPagesScrollView = [[UIScrollView alloc] initWithFrame:self.emojiPagesFrame];
     self.emojiPagesScrollView.backgroundColor = [UIColor clearColor];
     self.emojiPagesScrollView.pagingEnabled = YES;
     self.emojiPagesScrollView.showsHorizontalScrollIndicator = NO;
@@ -220,7 +217,8 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
     return [self initWithFrame:frame dataSource:dataSource];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame pageControlFrame:(CGRect)pageControlFrame buttonsBarFrame:(CGRect)buttonsBarFrame dataSource:(id<AGEmojiKeyboardViewDataSource>)dataSource {
+- (instancetype)initWithFrame:(CGRect)frame emojiPagesFrame:(CGRect)emojiPagesFrame pageControlFrame:(CGRect)pageControlFrame buttonsBarFrame:(CGRect)buttonsBarFrame dataSource:(id<AGEmojiKeyboardViewDataSource>)dataSource {
+    self.emojiPagesFrame = emojiPagesFrame;
     self.pageControlFrame = pageControlFrame;
     self.buttonsBarFrame = buttonsBarFrame;
     return [self initWithFrame:frame dataSource:dataSource];
@@ -245,11 +243,8 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
   self.pageControl.pageIndicatorTintColor = self.pageIndicatorTintColor;
   self.pageControl.currentPageIndicatorTintColor = self.currentPageIndicatorTintColor;
   
-    CGFloat barHeight = CGRectGetHeight(self.segmentsBarFrame) ? CGRectGetHeight(self.segmentsBarFrame) : CGRectGetHeight(self.buttonsBarFrame);
-    self.emojiPagesScrollView.frame = CGRectMake(0,
-                                               CGRectGetHeight(self.pageControl.bounds),
-                                               CGRectGetWidth(self.bounds),
-                                               CGRectGetHeight(self.bounds) - barHeight - pageControlSize.height);
+  CGFloat barHeight = CGRectGetHeight(self.segmentsBarFrame) ? CGRectGetHeight(self.segmentsBarFrame) : CGRectGetHeight(self.buttonsBarFrame);
+  self.emojiPagesScrollView.frame = self.emojiPagesFrame;
   [self.emojiPagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
   self.emojiPagesScrollView.contentOffset = CGPointMake(CGRectGetWidth(self.emojiPagesScrollView.bounds) * currentPage, 0);
   self.emojiPagesScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.emojiPagesScrollView.bounds) * numberOfPages,
@@ -326,15 +321,12 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 - (AGEmojiPageView *)synthesizeEmojiPageView {
   NSUInteger rows = [self numberOfRowsForFrameSize:self.emojiPagesScrollView.bounds.size];
   NSUInteger columns = [self numberOfColumnsForFrameSize:self.emojiPagesScrollView.bounds.size];
-  CGRect pageViewFrame = CGRectMake(0,
-                                    0,
-                                    CGRectGetWidth(self.emojiPagesScrollView.bounds),
-                                    CGRectGetHeight(self.emojiPagesScrollView.bounds));
+  CGRect pageViewFrame = self.emojiPagesScrollView.frame;
   UIImage *backSpaceImage;
   if ([self.dataSource shouldAddBackSpaceButtonToEmojiKeyboardView]) {
       backSpaceImage = [self.dataSource backSpaceButtonImageForEmojiKeyboardView:self];
   }
-  AGEmojiPageView *pageView = [[AGEmojiPageView alloc] initWithFrame: pageViewFrame
+  AGEmojiPageView *pageView = [[AGEmojiPageView alloc] initWithFrame:pageViewFrame
                                                 backSpaceButtonImage:backSpaceImage
                                                           buttonSize:CGSizeMake(ButtonWidth, ButtonHeight)
                                                                 rows:rows

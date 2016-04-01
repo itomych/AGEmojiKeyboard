@@ -66,6 +66,7 @@ typedef NS_ENUM(NSInteger, AGEmojiKeyboardViewCategoryImage) {
                    dataSource:(id<AGEmojiKeyboardViewDataSource>)dataSource;
 
 - (instancetype)initWithFrame:(CGRect)frame
+              emojiPagesFrame:(CGRect)emojiPagesFrame 
              pageControlFrame:(CGRect)pageControlFrame
               buttonsBarFrame:(CGRect)buttonsBarFrame
                    dataSource:(id<AGEmojiKeyboardViewDataSource>)dataSource;
